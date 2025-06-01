@@ -1,0 +1,63 @@
+# Dependencies
+frontend/node_modules/
+backend/node_modules/
+frontend/.pnp
+frontend/.pnp.js
+backend/.pnp
+backend/.pnp.js
+
+# Testing
+frontend/coverage/
+backend/coverage/
+
+# Production
+frontend/build/
+frontend/dist/
+backend/build/
+backend/dist/
+
+# Environment files
+frontend/.env
+frontend/.env.local
+frontend/.env.development.local
+frontend/.env.test.local
+frontend/.env.production.local
+backend/.env
+backend/.env.local
+backend/.env.development.local
+backend/.env.test.local
+backend/.env.production.local
+
+# Debug logs
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+backend/npm-debug.log*
+backend/yarn-debug.log*
+backend/yarn-error.log*
+
+# IDE and Editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# TypeScript
+frontend/*.tsbuildinfo
+backend/*.tsbuildinfo
+
+# Cache
+frontend/.cache/
+frontend/.next/
+frontend/.nuxt/
+frontend/.temp/
+backend/.cache/
+backend/.next/
+backend/.nuxt/
+backend/.temp/
+
+# Misc
+.DS_Store
+*.pem
+.vercel 

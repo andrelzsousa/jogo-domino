@@ -1,0 +1,552 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Arial", sans-serif;
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  min-height: 100vh;
+  color: white;
+}
+
+.app {
+  min-height: 100vh;
+  padding: 20px;
+}
+
+/* Tela inicial */
+.welcome-screen {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.welcome-screen h1 {
+  font-size: 3rem;
+  margin-bottom: 30px;
+  color: #fff;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.rules-section {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  padding: 30px;
+  margin-bottom: 30px;
+  backdrop-filter: blur(10px);
+  text-align: left;
+}
+
+.rules-section h2 {
+  color: #ffd700;
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+}
+
+.rules-section ul {
+  list-style-position: inside;
+  line-height: 1.6;
+}
+
+.rules-section li {
+  margin-bottom: 8px;
+}
+
+.join-section {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 15px;
+  padding: 30px;
+  backdrop-filter: blur(10px);
+}
+
+.join-section input {
+  width: 100%;
+  max-width: 300px;
+  padding: 15px;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.join-section button {
+  padding: 15px 40px;
+  font-size: 1.2rem;
+  background: #ffd700;
+  color: #333;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: transform 0.2s;
+}
+
+.join-section button:hover {
+  transform: translateY(-2px);
+  background: #ffed4a;
+}
+
+.join-section button:disabled {
+  background: #666;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.error-message {
+  background: rgba(255, 0, 0, 0.2);
+  color: #ff6b6b;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  border: 1px solid rgba(255, 0, 0, 0.3);
+}
+
+.waiting-message {
+  background: rgba(0, 255, 0, 0.2);
+  color: #4ecdc4;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  border: 1px solid rgba(0, 255, 0, 0.3);
+}
+
+/* Tela do jogo */
+.game-screen {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  padding: 10px;
+}
+
+.scoreboard {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 20px;
+  backdrop-filter: blur(10px);
+  text-align: center;
+}
+
+.teams-display {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.team {
+  text-align: center;
+}
+
+.team h3 {
+  color: #ffd700;
+  margin-bottom: 10px;
+}
+
+.team-players {
+  font-size: 0.9rem;
+  margin-bottom: 5px;
+}
+
+.team-score {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #fff;
+}
+
+/* Mesa do jogo */
+.game-table {
+  flex: 1;
+  background: rgba(0, 100, 0, 0.3);
+  border-radius: 15px;
+  position: relative;
+  margin-bottom: 20px;
+  min-height: 400px;
+  border: 3px solid rgba(255, 255, 255, 0.2);
+}
+
+.board {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  max-width: 90%;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.opponent-hands {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.opponent-hand {
+  position: absolute;
+  display: flex;
+  gap: 5px;
+}
+
+.opponent-hand.top {
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.opponent-hand.left {
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%) rotate(90deg);
+  transform-origin: center;
+}
+
+.opponent-hand.right {
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%) rotate(-90deg);
+  transform-origin: center;
+}
+
+.opponent-tile {
+  width: 30px;
+  height: 60px;
+  background: #8b4513;
+  border: 2px solid #654321;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 0.7rem;
+  font-weight: bold;
+}
+
+.current-player-indicator {
+  position: absolute;
+  background: #ffd700;
+  color: #333;
+  padding: 5px 10px;
+  border-radius: 15px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.current-player-indicator.top {
+  top: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.current-player-indicator.left {
+  left: -5px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.current-player-indicator.right {
+  right: -5px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.current-player-indicator.bottom {
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Mão do jogador */
+.player-hand {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 15px;
+  backdrop-filter: blur(10px);
+}
+
+.hand-title {
+  text-align: center;
+  margin-bottom: 15px;
+  color: #ffd700;
+}
+
+.hand-tiles {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* Peças de dominó */
+.domino-tile {
+  width: 60px;
+  height: 120px;
+  background: linear-gradient(145deg, #f0f0f0, #d0d0d0);
+  border: 2px solid #333;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 8px;
+  transition: all 0.3s ease;
+  user-select: none;
+  position: relative;
+}
+
+.domino-tile:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+.domino-tile.dragging {
+  opacity: 0.7;
+  transform: scale(1.1);
+  z-index: 1000;
+}
+
+.domino-tile.playable {
+  border-color: #ffd700;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+.tile-half {
+  height: 45%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  background: white;
+  position: relative;
+}
+
+.tile-half.top {
+  border-bottom: 1px solid #333;
+}
+
+.dots {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  width: 100%;
+  height: 100%;
+  gap: 2px;
+  padding: 2px;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  background: #333;
+  border-radius: 50%;
+}
+
+.board-tile {
+  width: 40px;
+  height: 80px;
+  background: linear-gradient(145deg, #f0f0f0, #d0d0d0);
+  border: 1px solid #333;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 4px;
+}
+
+.board-tile.horizontal {
+  width: 80px;
+  height: 40px;
+  flex-direction: row;
+}
+
+.board-tile .tile-half {
+  height: 45%;
+  background: white;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.board-tile.horizontal .tile-half {
+  width: 45%;
+  height: 100%;
+}
+
+.board-tile .dots {
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  width: 100%;
+  height: 100%;
+  gap: 1px;
+}
+
+.board-tile .dot {
+  width: 3px;
+  height: 3px;
+  background: #333;
+  border-radius: 50%;
+}
+
+/* Botões de ação */
+.game-actions {
+  text-align: center;
+  margin-top: 15px;
+}
+
+.pass-button {
+  padding: 10px 20px;
+  background: #ff6b6b;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.3s;
+}
+
+.pass-button:hover {
+  background: #ff5252;
+}
+
+.pass-button:disabled {
+  background: #666;
+  cursor: not-allowed;
+}
+
+/* Drop zones */
+.drop-zone {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  border: 3px dashed rgba(255, 215, 0, 0.7);
+  border-radius: 10px;
+  background: rgba(255, 215, 0, 0.1);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: #ffd700;
+}
+
+.drop-zone.active {
+  display: flex;
+}
+
+.drop-zone.left {
+  left: 20%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.drop-zone.right {
+  right: 20%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* Mensagens do jogo */
+.game-message {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.9);
+  color: white;
+  padding: 30px;
+  border-radius: 15px;
+  text-align: center;
+  z-index: 1000;
+  min-width: 300px;
+}
+
+.game-message h2 {
+  color: #ffd700;
+  margin-bottom: 15px;
+}
+
+.game-message p {
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .welcome-screen h1 {
+    font-size: 2rem;
+  }
+
+  .rules-section,
+  .join-section {
+    padding: 20px;
+  }
+
+  .game-screen {
+    padding: 5px;
+  }
+
+  .teams-display {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .hand-tiles {
+    gap: 5px;
+  }
+
+  .domino-tile {
+    width: 50px;
+    height: 100px;
+  }
+
+  .opponent-tile {
+    width: 25px;
+    height: 50px;
+  }
+}
+
+/* Animações */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.game-screen {
+  animation: slideIn 0.5s ease-out;
+}
+
+.domino-tile {
+  animation: slideIn 0.3s ease-out;
+}
+
+/* Estados especiais */
+.game-ended {
+  pointer-events: none;
+  opacity: 0.7;
+}
