@@ -40,9 +40,13 @@ function DominoTile({
   };
 
   const handleDragStart = (e) => {
-    if (isPlayable && onDragStart) {
-      onDragStart();
-    }
+    if (!isPlayable || !onDragStart) return;
+
+    e.dataTransfer.effectAllowed = "move";
+
+    e.dataTransfer.setData("text/plain", JSON.stringify(tile));
+
+    onDragStart(tile);
   };
 
   const handleDragEnd = (e) => {

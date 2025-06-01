@@ -107,14 +107,26 @@ function broadcastGameState() {
 
 // Próximo jogador
 function nextPlayer() {
+  let found = false;
+  let attempts = 0;
+
   do {
     gameState.currentPlayer = (gameState.currentPlayer + 1) % 4;
-  } while (
-    !gameLogic.canPlayerPlay(
-      players[gameState.currentPlayer].hand,
-      gameState.board
-    )
-  );
+    attempts++;
+    if (
+      gameLogic.canPlayerPlay(
+        players[gameState.currentPlayer].hand,
+        gameState.board
+      )
+    ) {
+      found = true;
+      break;
+    }
+  } while (attempts < 4);
+
+  if (!found) {
+    checkRoundEnd();
+  }
 }
 
 // Verifica fim da rodada
@@ -224,12 +236,14 @@ function startPlayerTimeout() {
 
   gameState.timeouts[gameState.currentPlayer] = setTimeout(() => {
     handlePlayerTimeout(gameState.currentPlayer);
-  }, 20000);
+  }, 2000000);
 }
 
 // Joga uma pedra
 function playTile(playerId, tile, position) {
-  if (gameState.currentPlayer !== playerId) return false;
+  if (gameState.currentPlayer !== playerId) {
+    return false;
+  }
 
   const player = players[playerId];
   const tileIndex = player.hand.findIndex((t) => t.id === tile.id);
@@ -300,8 +314,9 @@ io.on("connection", (socket) => {
 
       shuffledIndices.forEach((originalIndex, newIndex) => {
         players[newIndex] = originalPlayers[originalIndex];
-        players[newIndex].id = newIndex;
         players[newIndex].team = newIndex % 2;
+        players[newIndex].id = newIndex; 
+        players[newIndex].socket.playerId = newIndex;
       });
 
       currentGame = {
