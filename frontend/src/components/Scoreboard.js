@@ -1,29 +1,19 @@
 import React from "react";
 
 const Scoreboard = ({ gameState, players }) => {
-  const { score = { team1: 0, team2: 0 }, currentRoundMultiplier = 1 } =
-    gameState || {};
+  const team1 = gameState.teams.team1;
+  const team2 = gameState.teams.team2;
 
-  // Organiza os jogadores em duplas
-  const getTeams = () => {
-    if (!players || players.length < 4) return { team1: [], team2: [] };
-
-    const team1 = players.filter((p) => p.team === 1);
-    const team2 = players.filter((p) => p.team === 2);
-
-    return { team1, team2 };
-  };
-
-  const { team1, team2 } = getTeams();
+  console.log(gameState);
 
   const formatTeamNames = (team) => {
-    if (team.length < 2) return "Aguardando jogadores...";
-    return `${team[0].name} / ${team[1].name}`;
+    if (team.names.length < 2) return "Aguardando jogadores...";
+    return `${team.names[0]} & ${team.names[1]}`;
   };
 
   const getWinningTeam = () => {
-    if (score.team1 >= 6 && score.team1 > score.team2) return 1;
-    if (score.team2 >= 6 && score.team2 > score.team1) return 2;
+    if (team1.score >= 6 && team1.score > team2.score) return 1;
+    if (team2.score >= 6 && team2.score > team1.score) return 2;
     return null;
   };
 
@@ -31,7 +21,7 @@ const Scoreboard = ({ gameState, players }) => {
 
   return (
     <div className="scoreboard">
-      {currentRoundMultiplier > 1 && (
+      {/* {currentRoundMultiplier > 1 && (
         <div
           className="error-message"
           style={{
@@ -42,26 +32,31 @@ const Scoreboard = ({ gameState, players }) => {
         >
           <strong>Próxima rodada vale {currentRoundMultiplier}x pontos!</strong>
         </div>
-      )}
+      )} */}
 
       <div className="teams-display">
         <div className="team">
           <h3>DUPLA 1</h3>
           <div className="team-players">{formatTeamNames(team1)}</div>
+
+          <div style={{ fontSize: "0.8rem", marginTop: "5px" }}>
+            {team1.names.map((player, index) => (
+              <div key={index} style={{ marginBottom: "2px" }}>
+                <span>{player}: </span>
+                <span>
+                  {players.find((p) => p.name === player).handCount || 0} pedras
+                </span>
+              </div>
+            ))}
+          </div>
+
           <div
             className="team-score"
             style={{ color: winningTeam === 1 ? "#ffd700" : "#fff" }}
           >
-            {score.team1}
+            {team1.score}
           </div>
-          <div style={{ fontSize: "0.8rem", marginTop: "5px" }}>
-            {team1.map((player) => (
-              <div key={player.id} style={{ marginBottom: "2px" }}>
-                <span>{player.name.substring(0, 10)}: </span>
-                <span>{player.stonesCount || 0} pedras</span>
-              </div>
-            ))}
-          </div>
+          <div style={{ fontSize: "0.8rem", marginTop: "5px" }}></div>
         </div>
 
         <div
@@ -79,19 +74,23 @@ const Scoreboard = ({ gameState, players }) => {
         <div className="team">
           <h3>DUPLA 2</h3>
           <div className="team-players">{formatTeamNames(team2)}</div>
+
+          <div style={{ fontSize: "0.8rem", marginTop: "5px" }}>
+            {team2.names.map((player, index) => (
+              <div key={index} style={{ marginBottom: "2px" }}>
+                <span>{player}: </span>
+                <span>
+                  {players.find((p) => p.name === player).handCount || 0} pedras
+                </span>
+              </div>
+            ))}
+          </div>
+
           <div
             className="team-score"
             style={{ color: winningTeam === 2 ? "#ffd700" : "#fff" }}
           >
-            {score.team2}
-          </div>
-          <div style={{ fontSize: "0.8rem", marginTop: "5px" }}>
-            {team2.map((player) => (
-              <div key={player.id} style={{ marginBottom: "2px" }}>
-                <span>{player.name.substring(0, 10)}: </span>
-                <span>{player.stonesCount || 0} pedras</span>
-              </div>
-            ))}
+            {team2.score}
           </div>
         </div>
       </div>
@@ -100,7 +99,7 @@ const Scoreboard = ({ gameState, players }) => {
         <div className="game-message">
           <h2>🎉 DUPLA {winningTeam} VENCEU A PARTIDA! 🎉</h2>
           <p>
-            Placar final: {score.team1} x {score.team2}
+            Placar final: {team1.score} x {team2.score}
           </p>
         </div>
       )}

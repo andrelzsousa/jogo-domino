@@ -206,7 +206,7 @@ function App() {
     return (
       <div className="app">
         <div className="game-screen">
-          <Scoreboard teams={gameData.teams} />
+          <Scoreboard players={gameData.players} gameState={gameData} />
 
           <GameBoard
             board={gameData.board}
