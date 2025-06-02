@@ -44,6 +44,13 @@ function GameBoard({
     }
   };
 
+  const getPlayableSides = (tile, index) => {
+    if (board.length === 0) return { left: true, right: true };
+    if (index === 0) return { left: true, right: false };
+    if (index === board.length - 1) return { left: false, right: true };
+    return { left: false, right: false };
+  };
+
   const renderOpponentHand = (player, position, index) => {
     const isCurrentPlayer = index === currentPlayer;
 
@@ -113,14 +120,19 @@ function GameBoard({
           )}
 
         {/* Tabuleiro com as peças jogadas */}
-        {board.map((tile, index) => (
-          <DominoTile
-            key={`${tile.id}-${index}`}
-            tile={tile}
-            isOnBoard={true}
-            small={true}
-          />
-        ))}
+        {board.map((tile, index) => {
+          const playableSides = getPlayableSides(tile, index);
+          return (
+            <DominoTile
+              key={`${tile.id}-${index}`}
+              tile={tile}
+              isOnBoard={true}
+              small={true}
+              playableLeft={playableSides.left}
+              playableRight={playableSides.right}
+            />
+          );
+        })}
 
         {/* Drop zone direita */}
         {board.length > 0 &&

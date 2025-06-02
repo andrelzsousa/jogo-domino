@@ -9,6 +9,8 @@ function DominoTile({
   onDragStart,
   onDragEnd,
   isDragging = false,
+  playableLeft = false,
+  playableRight = false,
 }) {
   const dotPositions = {
     0: [],
@@ -144,11 +146,13 @@ function DominoTile({
           : ""
       }
     >
-      <div className="tile-half top">
+      <div className={`tile-half top ${playableLeft ? "playable-side" : ""}`}>
         <div>{renderDots(tile.left)}</div>
       </div>
 
-      <div className="tile-half bottom">
+      <div
+        className={`tile-half bottom ${playableRight ? "playable-side" : ""}`}
+      >
         <div>{renderDots(tile.right)}</div>
       </div>
     </div>
